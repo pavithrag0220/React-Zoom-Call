@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import child from './child.jpg';
 import './App.css';
 import Zoom from './Zoom';

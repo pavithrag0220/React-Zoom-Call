@@ -1,11 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=RocknRoll+One&display=swap');
 
-/* @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-} */
 
 /* .App-header {
   background-color: #282c34;
@@ -18,15 +13,6 @@
   color: white;
 } */
 
-
-/* @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-} */
 #zmmtg-root {
   display: none;
 }

@@ -23,12 +23,12 @@ function generateSignature(apiKey, apiSecret, meetingNumber, role) {
 }
 
 var apiKey = "d-sh6ErCQvSw2Rj-yCEPgg";
-var meetingNumber = 92013879389;
+var meetingNumber = "Enter here meeting ID";
 var apiSecret = "lXMtvcTXRFGZ5UrO7Da5jMsagb7nfmR0D6lr";
 var leaveUrl = "http://localhost:3000"; // our redirect url
 var userName = "WebSDK";
 var userEmail = "pavithra.g@abitechnologies.in";
-var passWord = "BzBbS2";
+var passWord = "Enter here meeting password";
 
 var signature = "";
 generateSignature(apiKey, apiSecret, meetingNumber, 0).then((res) => {
