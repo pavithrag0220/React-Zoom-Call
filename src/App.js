@@ -8,6 +8,13 @@ import NavBar from './NavBar';
 function App() {
   var ReactRotatingText = require('react-rotating-text');
   const [joinMeeting, setjoinMeeting] = useState(false);
+  const [meetingNumber, set_meetingNumber] = useState("");
+  const [passWord, set_passWord] = useState("");
+
+  const submitForm = (e) => {
+    e.preventDefault();
+    setjoinMeeting(true);
+  }
   return (
     <>
     <NavBar/>
@@ -35,9 +42,13 @@ function App() {
         <div className="sd-txt">
           <label className="text-info pt-4">Get Demo Meeting by calling  </label>
           <label><b>+91 234567891</b> </label>
-          <label className="text-info">Click on <strong>"join zoom meeting"</strong></label>
+          <form onSubmit={(e) => {submitForm(e)}}>
+            <input placeholder="Enter meeting ID" type="text" value={meetingNumber} onChange={(e) => set_meetingNumber(e.target.value)}></input>
+            <input placeholder="Enter password" type="text" value={passWord} onChange={(e) => set_passWord(e.target.value)}></input>
+            <button type="submit" className="text-info">Click on <strong>"join zoom meeting"</strong></button>
+          </form>
           {
-            joinMeeting ? <Zoom /> : (
+            joinMeeting ? <Zoom credentials={{meetingNumber, passWord}} /> : (
               <header className="App-header">
                 <button className="btn2" onClick={() => setjoinMeeting(true)}>Join Zoom Meeting</button>
               </header>

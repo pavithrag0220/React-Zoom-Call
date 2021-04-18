@@ -1,51 +1,55 @@
 // import './Zoom.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { ZoomMtg } from '@zoomus/websdk';
+import crypto, { sign } from 'crypto';
+// const crypto = require('crypto') // crypto comes with Node.js
 
-const crypto = require('crypto') // crypto comes with Node.js
+const Zoom = (props) => {
 
-function generateSignature(apiKey, apiSecret, meetingNumber, role) {
+  let [meetingNumber, set_meetingNumber] = useState(props.credentials.meetingNumber);
+  let [passWord, set_passWord] = useState(props.credentials.passWord);
+  let [leaveUrl, set_leaveUrl] = useState("http://localhost:3000"); // our redirect url
+  let [userName, set_userName] = useState("WebSDK");
+  let [userEmail, set_userEmail] = useState("pavithra.g@abitechnologies.in");
+  let [signature, set_signature] = useState("");
+  let [apiKey, set_apiKey] = useState("d-sh6ErCQvSw2Rj-yCEPgg");
 
-  return new Promise((res, rej) => {
-    // Prevent time sync issue between client signature generation and zoom 
-    const timestamp = new Date().getTime() - 30000;
-    const msg = Buffer.from(apiKey + meetingNumber + timestamp + role).toString('base64');
-    const hash = crypto
-      .createHmac('sha256', apiSecret)
-      .update(msg)
-      .digest('base64');
-    const signature = Buffer.from(
-      `${apiKey}.${meetingNumber}.${timestamp}.${role}.${hash}`
-    ).toString('base64');
+  function generateSignature(apiKey, apiSecret, meetingNumber, role) {
 
-    res(signature);
-  })
-}
-
-var apiKey = "d-sh6ErCQvSw2Rj-yCEPgg";
-var meetingNumber = "Enter here meeting ID";
-var apiSecret = "lXMtvcTXRFGZ5UrO7Da5jMsagb7nfmR0D6lr";
-var leaveUrl = "http://localhost:3000"; // our redirect url
-var userName = "WebSDK";
-var userEmail = "pavithra.g@abitechnologies.in";
-var passWord = "Enter here meeting password";
-
-var signature = "";
-generateSignature(apiKey, apiSecret, meetingNumber, 0).then((res) => {
-  signature = res;
-
-}); // need to generate based on meeting ID
-
-const Zoom = () => {
+    return new Promise((res, rej) => {
+      // Prevent time sync issue between client signature generation and zoom 
+      const timestamp = new Date().getTime() - 30000;
+      const msg = Buffer.from(apiKey + meetingNumber + timestamp + role).toString('base64');
+      const hash = crypto
+        .createHmac('sha256', apiSecret)
+        .update(msg)
+        .digest('base64');
+      const signature = Buffer.from(
+        `${apiKey}.${meetingNumber}.${timestamp}.${role}.${hash}`
+      ).toString('base64');
+  
+      res(signature);
+    })
+  }
+  
 
   // loading zoom libraries before joing on component did mount
   useEffect(() => {
-    showZoomDiv();
+    var apiSecret = "lXMtvcTXRFGZ5UrO7Da5jMsagb7nfmR0D6lr";
+    generateSignature(apiKey, apiSecret, meetingNumber, 0).then((res) => {
+      set_signature(res);
+    }); // need to generate based on meeting ID
+  }, []);
+
+  useEffect(() => {
+    if(signature) {
+      showZoomDiv();
     ZoomMtg.setZoomJSLib('https://source.zoom.us/1.9.1/lib', '/av');
     ZoomMtg.preLoadWasm();
     ZoomMtg.prepareJssdk();
     initiateMeeting();
-  }, []);
+    }
+  }, [signature]);
 
   const showZoomDiv = () => {
     document.getElementById('zmmtg-root').style.display = 'block';
@@ -69,7 +73,7 @@ const Zoom = () => {
             console.log(success)
           },
           error: (error) => {
-            console.log(error)
+            console.log(error, signature)
           }
         })
 
