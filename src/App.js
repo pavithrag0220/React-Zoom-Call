@@ -40,12 +40,26 @@ function App() {
         <Col md={{ span: 4, offset: 2 }}></Col>
         <Col md={3}>
         <div className="sd-txt">
-          <label className="text-info pt-4">Get Demo Meeting by calling  </label>
+          <label className="text-info">Get Demo Meeting by calling  </label>
           <label><b>+91 234567891</b> </label>
-          <form onSubmit={(e) => {submitForm(e)}}>
-            <input placeholder="Enter meeting ID" type="text" value={meetingNumber} onChange={(e) => set_meetingNumber(e.target.value)}></input>
-            <input placeholder="Enter password" type="text" value={passWord} onChange={(e) => set_passWord(e.target.value)}></input>
+          <form className="form-group" onSubmit={(e) => {submitForm(e)}}>
+          <label>
+            <input className="form-control "  
+              placeholder="Enter meeting ID" 
+              type="text" value={meetingNumber} 
+              onChange={(e) => set_meetingNumber(e.target.value)}>
+            </input>
+          </label>
+          <label>
+            <input className="form-control" 
+              placeholder="Enter Password" 
+              type="text" value={passWord} 
+              onChange={(e) => set_passWord(e.target.value)}>
+            </input>
+          </label>
+
             <button type="submit" className="text-info">Click on <strong>"join zoom meeting"</strong></button>
+
           </form>
           {
             joinMeeting ? <Zoom credentials={{meetingNumber, passWord}} /> : (
